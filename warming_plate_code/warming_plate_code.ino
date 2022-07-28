@@ -9,7 +9,7 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int relay_pin = 7;
 int increment_button = 6;
 int decrement_button = A1;
-int change_temp_button = 1;
+int change_temp_button = A0;
 int temp_setpoint = 70;
 
 void setup() 
@@ -54,8 +54,12 @@ float read_and_display_temp()
 {
   float thermo_temp = (maxthermo.readThermocoupleTemperature() * 1.8) + 32.0;
   lcd.setCursor(0, 0);
+  lcd.print("Surface Temp:");
+  lcd.setCursor(14, 0);
   lcd.print(thermo_temp);
   lcd.setCursor(0, 1);
+  lcd.print("Set Point:");
+  lcd.setCursor(11, 1);
   lcd.print(temp_setpoint);
   return thermo_temp;
 }
@@ -63,31 +67,34 @@ float read_and_display_temp()
 void change_temp()
 {
   lcd.clear();
-  lcd.print("Chnage Temp");
+  lcd.setCursor(0, 0);
+  lcd.print("Set Tempature");
   
   do
   {
     lcd.setCursor(0, 1);
+    lcd.print("Set Point:");
+    lcd.setCursor(11, 1);
     lcd.print(temp_setpoint);
     
     int temp_up = digitalRead(increment_button);
-    delay(200);
     int temp_down = digitalRead(decrement_button);
-    delay(200);
 
     if(temp_up == HIGH)
     {
       temp_setpoint += 1;
+      delay(500);
     }
     else if(temp_down == HIGH)
     {
       temp_setpoint -= 1;
+      delay(500);
     }
   }
   while(digitalRead(change_temp_button) == HIGH);
 
   lcd.clear();
-  lcd.print("Exited Function");
+  lcd.print("Temp has been set");
   delay(1000);
   lcd.clear();
 }
