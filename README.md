@@ -1,1 +1,1 @@
-# Arduino controled warming plate
+# Arduino controlled warming plate
