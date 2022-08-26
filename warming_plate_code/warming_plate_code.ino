@@ -10,7 +10,7 @@ int relay_pin = 7;
 int increment_button = 6;
 int decrement_button = A1;
 int change_temp_button = A0;
-int temp_setpoint = 70;
+float temp_setpoint = 100.0;
 
 void setup() 
 {
@@ -35,20 +35,24 @@ void loop()
   
   if(temp_button == HIGH)
   {
+    digitalWrite(relay_pin, LOW);
     change_temp();
   }
 
-  if(surface_temp < temp_setpoint)
-  {
-    digitalWrite(relay_pin, HIGH);
-  }
-  else
+  else if(surface_temp >= 200.0)
   {
     digitalWrite(relay_pin, LOW);
   }
-
-  delay(2000);
+  else if(surface_temp <= temp_setpoint - 10.0)
+  {
+    digitalWrite(relay_pin, HIGH);
+  }
+  else if (surface_temp >= temp_setpoint - 5)
+  {
+    digitalWrite(relay_pin, LOW);
+  }
 }
+
 
 float read_and_display_temp()
 {
@@ -95,6 +99,6 @@ void change_temp()
 
   lcd.clear();
   lcd.print("Temp has been set");
-  delay(1000);
+  delay(500);
   lcd.clear();
 }
