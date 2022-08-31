@@ -28,7 +28,9 @@ void setup()
 
 void loop() 
 {
+  delay(3000);
   float surface_temp = read_and_display_temp();
+  delay(500);
   
   int temp_button = digitalRead(change_temp_button);
   delay(200);
@@ -38,16 +40,29 @@ void loop()
     digitalWrite(relay_pin, LOW);
     change_temp();
   }
-
   else if(surface_temp >= 200.0)
   {
     digitalWrite(relay_pin, LOW);
   }
-  else if(surface_temp <= temp_setpoint - 10.0)
+  else if(surface_temp < temp_setpoint - 20.0)
   {
     digitalWrite(relay_pin, HIGH);
+    delay(6000);
+    digitalWrite(relay_pin, LOW);
   }
-  else if (surface_temp >= temp_setpoint - 5)
+  else if (surface_temp <= temp_setpoint - 10)
+  {
+    digitalWrite(relay_pin, HIGH);
+    delay(3000);
+    digitalWrite(relay_pin, LOW);
+  }
+  else if(surface_temp <= temp_setpoint - 5)
+  {
+    digitalWrite(relay_pin, HIGH);
+    delay(1500);
+    digitalWrite(relay_pin, LOW);
+  }
+  else
   {
     digitalWrite(relay_pin, LOW);
   }
